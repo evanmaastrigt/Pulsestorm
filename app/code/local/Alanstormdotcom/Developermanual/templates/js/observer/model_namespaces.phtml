@@ -1,0 +1,15 @@
+<?php $urlModule = Mage::getModel('adminhtml/url')->getUrl('*/*/modules'); ?>
+        $('namespace_select').observe('change',function(e){			
+			if($('namespace_select').value) {
+				var r = new Ajax.Request('<?php  echo $urlModule; ?>',{
+					method:'get',
+					parameters:{namespace : $('namespace_select').value,
+                                type      : 'Model'},
+					onSuccess:function(r){
+						$('module_select').innerHTML = r.responseText;
+						$('module_span').show();
+                        $('class_span').hide();
+					}
+				})
+			}
+		});

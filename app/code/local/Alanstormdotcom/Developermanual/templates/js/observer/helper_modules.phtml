@@ -1,0 +1,13 @@
+<?php $urlHelper = Mage::getModel('adminhtml/url')->getUrl('*/*/helpers'); ?>
+        $('module_select').observe('change',function(e){			
+			if($('module_select').value) {
+				var r = new Ajax.Request('<?php  echo $urlHelper; ?>',{
+					method:'get',
+					parameters:{module : $('module_select').value},
+					onSuccess:function(r){
+						$('class_select').innerHTML = r.responseText;
+						$('class_span').style.display = '';
+					}
+				})
+			}
+		});

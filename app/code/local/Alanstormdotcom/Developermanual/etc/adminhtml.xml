@@ -17,6 +17,11 @@
                     <!-- <action>adminhtml/alanstormdotcom_developermanual/helperReference</action> -->
                     <!-- <action>developermanual/helper/helperReference</action> -->
                 </helper_actions>
+                
+                <model_actions module="alanstormdotcom_developermanual">
+                    <title>Model Methods</title> 
+                    <action>adminhtml/alanstormdotcom_developermanual_model/modelReference</action>
+                </model_actions>
 
                 <magento_api module="alanstormdotcom_developermanual">
                     <title>Magento API</title> 

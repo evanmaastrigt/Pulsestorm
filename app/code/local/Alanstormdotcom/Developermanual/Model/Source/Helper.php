@@ -11,15 +11,15 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		return $this->_getDirs($codepool);
 	}
 	
-	public function getModules($namespace)
+	public function getModules($namespace, $type)
 	{
-		return $this->_getDirsContainingHelperDir($namespace);
+		return $this->_getDirsContainingTypeDir($namespace, $type);
 	}
 	
-	public function getHelpers($module)
+	public function getClasses($module, $type)
 	{
 		try {
-			$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($module . '/Helper'));
+			$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($module . '/' . $type));
 		} catch (UnexpectedValueException $e) {
 			return '';
 		}
@@ -53,7 +53,7 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		return $this->_toOptionsFromArray($dirs, $base);
 	}
 	
-	protected function _getDirsContainingHelperDir($base)
+	protected function _getDirsContainingTypeDir($base, $type)
 	{
 		try {
 			$it = new DirectoryIterator($base);
@@ -65,7 +65,7 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		foreach ($it as $fileinfo) {
 			if(! $fileinfo->isDot() && $fileinfo->isDir()) {
 				try {
-					$tmp = new DirectoryIterator($fileinfo->getPathName() . '/Helper');
+					$tmp = new DirectoryIterator($fileinfo->getPathName() . '/' . $type);
 				} catch(UnexpectedValueException $e) {
 					continue;
 				}

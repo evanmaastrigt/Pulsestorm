@@ -41,7 +41,7 @@
 		</td>
 		<td>
 			<?php
-				$method = "Mage::helper('" . $class['groupName'];
+				$method = "Mage::" . $this->getFactoryMethod() . "('" . $class['groupName'];
 				if($class['alias'] != 'data') {
 					$method .= '/' . $class['alias'];
 				}

@@ -1,7 +1,5 @@
 <?php
 $urlNamespace = Mage::getModel('adminhtml/url')->getUrl('*/*/namespaces');
-$urlModule = Mage::getModel('adminhtml/url')->getUrl('*/*/modules');
-$urlHelper = Mage::getModel('adminhtml/url')->getUrl('*/*/helpers');
 $urlClassInfo = Mage::getModel('adminhtml/url')->getUrl('*/*/classinfo');
 ?>
 <script type="text/javascript">
@@ -15,44 +13,24 @@ $urlClassInfo = Mage::getModel('adminhtml/url')->getUrl('*/*/classinfo');
 						$('namespace_select').innerHTML = r.responseText;
 						$('namespace_span').show();
                         $('module_span').hide();
-                        $('helper_span').hide();
+                        $('class_span').hide();
 					}
 				})
 			}
 		});
 		
-		$('namespace_select').observe('change',function(e){			
-			if($('namespace_select').value) {
-				var r = new Ajax.Request('<?php  echo $urlModule; ?>',{
-					method:'get',
-					parameters:{namespace : $('namespace_select').value},
-					onSuccess:function(r){
-						$('module_select').innerHTML = r.responseText;
-						$('module_span').show();
-                        $('helper_span').hide();
-					}
-				})
-			}
-		});
+        <?php echo $this->getChildHtml('js_observer_namespaces'); ?>
 		
-		$('module_select').observe('change',function(e){			
-			if($('module_select').value) {
-				var r = new Ajax.Request('<?php  echo $urlHelper; ?>',{
+        <?php echo $this->getChildHtml('js_observer_modules'); ?>
+        
+        <?php echo $this->getChildHtml('js_observer_classes'); ?>
+
+        /*
+		$('class_select').observe('change', function(e){			
+			if($('class_select').value) {
+				var r = new Ajax.Request('<?php  //echo $urlClassInfo; ?>',{
 					method:'get',
-					parameters:{module : $('module_select').value},
-					onSuccess:function(r){
-						$('helper_select').innerHTML = r.responseText;
-						$('helper_span').style.display = '';
-					}
-				})
-			}
-		});
-		
-		$('helper_select').observe('change', function(e){			
-			if($('helper_select').value) {
-				var r = new Ajax.Request('<?php  echo $urlClassInfo; ?>',{
-					method:'get',
-					parameters:{class : $('helper_select').value,
+					parameters:{class : $('class_select').value,
                                 sort : $('sort_select').value},
 					onSuccess:function(r){
 						$('result').innerHTML = r.responseText;
@@ -60,6 +38,7 @@ $urlClassInfo = Mage::getModel('adminhtml/url')->getUrl('*/*/classinfo');
 				})
 			}
 		});
+        */
         
         $('sort_select').observe('change', function(e){			
 			if($('helper_select').value) {
