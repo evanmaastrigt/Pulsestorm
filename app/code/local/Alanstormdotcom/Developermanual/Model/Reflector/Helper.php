@@ -116,6 +116,9 @@ class Alanstormdotcom_Developermanual_Model_Reflector_Helper extends Mage_Core_M
 	protected function _getDefaultValue(Reflector $prop)
 	{
 		if($prop->isProtected()) {
+		    if (version_compare(PHP_VERSION, '5.3.0') == -1) {
+		        return null;
+		    }
 			$prop->setAccessible(true);
 		}
 		
