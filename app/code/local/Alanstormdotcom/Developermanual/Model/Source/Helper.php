@@ -11,21 +11,26 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		return $this->_getDirs($codepool);
 	}
 	
-	public function getModules($namespace, $type)
+	public function getModules($namespace)
 	{
-		return $this->_getDirsContainingTypeDir($namespace, $type);
+		return $this->_getDirsContainingHelperDir($namespace);
 	}
 	
-	public function getClasses($module, $type)
+	public function getHelpers($module)
 	{
 		try {
-			$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($module . '/' . $type));
+			$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($module . '/Helper'));
 		} catch (UnexpectedValueException $e) {
 			return '';
 		}
 		
 		$options = array();
 		while($it->valid()) {
+		    $path = $it->getSubPathName();
+		    if($path[0] == '.') {
+		        $it->next();
+		        continue;
+		    }
 			if (! $it->isDot()) {
 				$label = strtolower(str_replace('.php', '', str_replace('/', '_', $it->getSubPathName())));
 				$options[$it->key() . '=>' . $label] = $label;
@@ -45,7 +50,9 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		
 		$dirs = array();
 		foreach ($it as $fileinfo) {
-			if(! $fileinfo->isDot() && $fileinfo->isDir()) {
+		    $fileName = $fileinfo->getFileName();
+		    $isDot = $fileName[0] == '.';
+			if(! $isDot && ! $fileinfo->isDot() && $fileinfo->isDir()) {
 				$dirs[] = $fileinfo->getFilename();
 			}
 		}
@@ -53,7 +60,7 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		return $this->_toOptionsFromArray($dirs, $base);
 	}
 	
-	protected function _getDirsContainingTypeDir($base, $type)
+	protected function _getDirsContainingHelperDir($base)
 	{
 		try {
 			$it = new DirectoryIterator($base);
@@ -63,9 +70,11 @@ class Alanstormdotcom_Developermanual_Model_Source_Helper extends Mage_Core_Mode
 		
 		$dirs = array();
 		foreach ($it as $fileinfo) {
-			if(! $fileinfo->isDot() && $fileinfo->isDir()) {
+		    $fileName = $fileinfo->getFileName();
+		    $isDot = $fileName[0] == '.';
+			if(! $isDot && ! $fileinfo->isDot() && $fileinfo->isDir()) {
 				try {
-					$tmp = new DirectoryIterator($fileinfo->getPathName() . '/' . $type);
+					$tmp = new DirectoryIterator($fileinfo->getPathName() . '/Helper');
 				} catch(UnexpectedValueException $e) {
 					continue;
 				}
